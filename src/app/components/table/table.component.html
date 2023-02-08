@@ -1,0 +1,40 @@
+<ng-container *ngIf="booksState$ | async as bookState; else loading">
+  <ng-container *ngIf="!bookState.isLoading; else loading">
+    <ng-container *ngIf="!bookState.error && bookState.books; else error">
+      <table class="table text-center" *ngIf="bookState.books.length > 0; else noBooks">
+        <thead>
+          <tr>
+            <th scope="col">Title</th>
+            <th scope="col">Author</th>
+            <th scope="col">Genres</th>
+            <th scope="col">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let book of bookState.books">
+            <td>{{book.title}}</td>
+            <td>{{book.author.name + " " + book.author.surname}}</td>
+            <td>
+              <ng-container *ngFor="let genre of book.genres">
+                {{genre.name}}<br />
+              </ng-container>
+            </td>
+            <td class="d-flex justify-content-center align-items-center flex-wrap gap-2">
+              <button type="button" class="btn btn-primary" (click)="updateBook(book)">Edit</button>
+              <button type="button" class="btn btn-danger" (click)="deleteBook(book)">Delete</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </ng-container>
+  </ng-container>
+</ng-container>
+<ng-template #loading>
+  <p class="text-center">Loading...</p>
+</ng-template>
+<ng-template #noBooks>
+  <p class="text-center fw-bold">There are no books!</p>
+</ng-template>
+<ng-template #error>
+  <p class="text-center fw-bold">There was an error fetching data. Please try again</p>
+</ng-template>

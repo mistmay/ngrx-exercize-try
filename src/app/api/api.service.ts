@@ -9,7 +9,7 @@ import { Genre } from '../models/genre';
   providedIn: 'root'
 })
 export class ApiService {
-  url: string = "http://localhost:8080/api";
+  url: string = "http://localhost:3000";
 
   constructor(private http: HttpClient) { }
 

@@ -3,9 +3,9 @@
   <div class="px-2">
     <ng-container *ngIf="form$ | async as form">
       <div class="container bg-white rounded p-5" [ngSwitch]="form">
-        <!--<app-form-author *ngSwitchCase="'author'"></app-form-author>
+        <app-form-author *ngSwitchCase="'author'"></app-form-author>
         <app-form-book *ngSwitchCase="'book'"></app-form-book>
-        <app-form-genre *ngSwitchCase="'genre'"></app-form-genre>-->
+        <app-form-genre *ngSwitchCase="'genre'"></app-form-genre>
       </div>
     </ng-container>
   </div>

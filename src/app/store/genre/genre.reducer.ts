@@ -5,13 +5,13 @@ import * as GenreActions from './genre.actions';
 export interface GenreState {
     genres: Genre[];
     error: string | undefined;
-    status: string;
+    isLoading: boolean;
 }
 
 const genreInitialState: GenreState = {
     genres: [],
     error: undefined,
-    status: 'loading'
+    isLoading: true
 };
 
 export const genreReducer = createReducer(
@@ -20,13 +20,13 @@ export const genreReducer = createReducer(
         return {
             ...state,
             genres: [...state.genres, action.payload],
-            status: 'loading'
+            isLoading: true
         };
     }),
     on(GenreActions.fetchGenres, (state: GenreState) => {
         return {
             ...state,
-            status: 'loading'
+            isLoading: true
         }
     }),
     on(GenreActions.setGenres, (state: GenreState, action: { payload: Genre[] }) => {
@@ -34,14 +34,14 @@ export const genreReducer = createReducer(
             ...state,
             genres: [...action.payload],
             error: undefined,
-            status: 'ok'
+            isLoading: false
         };
     }),
     on(GenreActions.fetchErrorGenre, (state: GenreState, action: { payload: string }) => {
         return {
             ...state,
             error: action.payload,
-            status: "ko"
+            isLoading: false
         };
     })
 );

@@ -5,13 +5,13 @@ import * as AuthorActions from './author.actions';
 export interface AuthorState {
     authors: Author[];
     error: string | undefined;
-    status: string;
+    isLoading: boolean;
 }
 
 const authorInitialState: AuthorState = {
     authors: [],
     error: undefined,
-    status: 'loading'
+    isLoading: true
 };
 
 export const authorReducer = createReducer(
@@ -20,13 +20,13 @@ export const authorReducer = createReducer(
         return {
             ...state,
             authors: [...state.authors, action.payload],
-            status: 'loading'
+            isLoading: true
         };
     }),
     on(AuthorActions.fetchAuthors, (state: AuthorState) => {
         return {
             ...state,
-            status: 'loading'
+            isLoading: true
         }
     }),
     on(AuthorActions.setAuthors, (state: AuthorState, action: { payload: Author[] }) => {
@@ -34,14 +34,14 @@ export const authorReducer = createReducer(
             ...state,
             authors: [...action.payload],
             error: undefined,
-            status: 'ok'
+            isLoading: false
         };
     }),
     on(AuthorActions.fetchErrorAuthor, (state: AuthorState, action: { payload: string }) => {
         return {
             ...state,
             error: action.payload,
-            status: "ko"
+            isLoading: false
         };
     })
 );

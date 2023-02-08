@@ -1,0 +1,16 @@
+{
+  "book": [],
+  "author": [
+    {
+      "name": "pinco",
+      "surname": "pallino",
+      "id": 1
+    }
+  ],
+  "genre": [
+    {
+      "name": "horror",
+      "id": 1
+    }
+  ]
+}

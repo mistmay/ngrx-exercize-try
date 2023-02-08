@@ -1,9 +1,11 @@
 import { Injectable } from "@angular/core";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
-import { switchMap, map } from "rxjs/operators";
+import { switchMap, map, catchError } from "rxjs/operators";
+import { of } from 'rxjs';
 import { ApiService } from "src/app/api/api.service";
 import { Author } from "src/app/models/author";
 import * as AuthorActions from './author.actions';
+import * as ModalActions from '../modal/modal.actions';
 
 @Injectable()
 export class AuthorEffects {
@@ -14,6 +16,12 @@ export class AuthorEffects {
                 return this.api.addAuthor(data.payload).pipe(
                     map(() => {
                         return AuthorActions.fetchAuthors();
+                    }),
+                    map(() => {
+                        return ModalActions.closeModal();
+                    }),
+                    catchError((error) => {
+                        return of(AuthorActions.fetchErrorAuthor({ payload: error.message }));
                     })
                 );
             })
@@ -34,6 +42,9 @@ export class AuthorEffects {
                     }),
                     map((authors: Author[]) => {
                         return AuthorActions.setAuthors({ payload: authors });
+                    }),
+                    catchError((error) => {
+                        return of(AuthorActions.fetchErrorAuthor({ payload: error.message }));
                     })
                 );
             })

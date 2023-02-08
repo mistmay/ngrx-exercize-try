@@ -5,6 +5,7 @@ import { catchError, map, switchMap } from "rxjs/operators";
 import { ApiService } from "src/app/api/api.service";
 import { Book } from "src/app/models/book";
 import * as BookActions from './book.actions';
+import * as ModalActions from '../modal/modal.actions';
 
 @Injectable()
 export class BookEffects {
@@ -16,8 +17,11 @@ export class BookEffects {
                     map(() => {
                         return BookActions.fetchBooks();
                     }),
+                    map(() => {
+                        return ModalActions.closeModal();
+                    }),
                     catchError((error) => {
-                        return of(BookActions.fetchErrorBook({ payload: error }));
+                        return of(BookActions.fetchErrorBook({ payload: error.message }));
                     })
                 );
             })
@@ -32,8 +36,11 @@ export class BookEffects {
                     map(() => {
                         return BookActions.fetchBooks();
                     }),
+                    map(() => {
+                        return ModalActions.closeModal();
+                    }),
                     catchError((error) => {
-                        return of(BookActions.fetchErrorBook({ payload: error }));
+                        return of(BookActions.fetchErrorBook({ payload: error.message }));
                     })
                 );
             })
@@ -49,7 +56,7 @@ export class BookEffects {
                         return BookActions.fetchBooks();
                     }),
                     catchError((error) => {
-                        return of(BookActions.fetchErrorBook({ payload: error }));
+                        return of(BookActions.fetchErrorBook({ payload: error.message }));
                     })
                 );
             })
@@ -73,7 +80,7 @@ export class BookEffects {
                         return BookActions.setBooks({ payload: books });
                     }),
                     catchError((error) => {
-                        return of(BookActions.fetchErrorBook({ payload: error }));
+                        return of(BookActions.fetchErrorBook({ payload: error.message }));
                     })
                 );
             })

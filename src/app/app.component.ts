@@ -3,6 +3,7 @@ import { Store } from '@ngrx/store';
 import { map, Observable } from 'rxjs';
 import * as fromApp from './store/app.reducer'
 import * as fromModal from './store/modal/modal.reducer';
+import * as BookActions from './store/book/book.actions';
 
 @Component({
   selector: 'app-root',
@@ -20,6 +21,7 @@ export class AppComponent implements OnInit {
         return modalState.showModal;
       })
     );
+    this.store.dispatch(BookActions.fetchBooks());
   }
 
 }

@@ -5,13 +5,13 @@ import * as BookActions from './book.actions';
 export interface BookState {
     books: Book[];
     error: string | undefined;
-    status: string;
+    isLoading: boolean;
 }
 
 const bookInitialState: BookState = {
     books: [],
     error: undefined,
-    status: 'loading'
+    isLoading: true
 };
 
 export const bookReducer = createReducer(
@@ -20,7 +20,7 @@ export const bookReducer = createReducer(
         return {
             ...state,
             books: [...state.books, action.payload],
-            status: 'loading'
+            isLoading: true
         };
     }),
     on(BookActions.updateBook, (state: BookState, action: { payload: { id: number, book: Book } }) => {
@@ -30,20 +30,20 @@ export const bookReducer = createReducer(
         return {
             ...state,
             books: updatedBooks,
-            status: 'loading'
+            isLoading: true
         };
     }),
     on(BookActions.deleteBook, (state: BookState, action: { payload: number }) => {
         return {
             ...state,
             books: state.books.filter((book: Book) => book.id !== action.payload),
-            status: 'loading'
+            isLoading: true
         };
     }),
     on(BookActions.fetchBooks, (state: BookState) => {
         return {
             ...state,
-            status: 'loading'
+            isLoading: true
         }
     }),
     on(BookActions.setBooks, (state: BookState, action: { payload: Book[] }) => {
@@ -51,14 +51,14 @@ export const bookReducer = createReducer(
             ...state,
             books: [...action.payload],
             error: undefined,
-            status: 'ok'
+            isLoading: false
         };
     }),
     on(BookActions.fetchErrorBook, (state: BookState, action: { payload: string }) => {
         return {
             ...state,
             error: action.payload,
-            status: "ko"
+            isLoading: false
         };
     })
 );

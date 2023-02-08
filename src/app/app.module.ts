@@ -11,19 +11,31 @@ import { BookEffects } from './store/book/book.effects';
 import { GenreEffects } from './store/genre/genre.effects';
 import { NavbarComponent } from './core/navbar/navbar.component';
 import { ModalComponent } from './core/modal/modal.component';
+import { MainPageComponent } from './views/main-page/main-page.component';
+import { TableComponent } from './components/table/table.component';
+import { FormAuthorComponent } from './components/form-author/form-author.component';
+import { ReactiveFormsModule } from '@angular/forms';
+import { FormGenreComponent } from './components/form-genre/form-genre.component';
+import { FormBookComponent } from './components/form-book/form-book.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     NavbarComponent,
-    ModalComponent
+    ModalComponent,
+    MainPageComponent,
+    TableComponent,
+    FormAuthorComponent,
+    FormGenreComponent,
+    FormBookComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
     StoreModule.forRoot(fromApp.appReducer),
-    EffectsModule.forRoot([AuthorEffects, BookEffects, GenreEffects])
+    EffectsModule.forRoot([AuthorEffects, BookEffects, GenreEffects]),
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
