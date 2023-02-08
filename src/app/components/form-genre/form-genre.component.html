@@ -1,7 +1,7 @@
 <form class="d-flex flex-column align-items-center gap-3 p-5 border border-secondary rounded" [formGroup]="form"
   (ngSubmit)="addGenre()">
   <h3 class="fw-bold">Add New Genre:</h3>
-  <p class="text-danger" *ngIf="error$ | async as error">
+  <p class="text-danger text-center" *ngIf="error$ | async as error">
     Error in sending data. Try Again <br />
     {{error}}
   </p>

@@ -6,6 +6,8 @@ import { ApiService } from "src/app/api/api.service";
 import { Book } from "src/app/models/book";
 import * as BookActions from './book.actions';
 import * as ModalActions from '../modal/modal.actions';
+import * as fromApp from '../app.reducer';
+import { Store } from "@ngrx/store";
 
 @Injectable()
 export class BookEffects {
@@ -15,10 +17,8 @@ export class BookEffects {
             switchMap((data) => {
                 return this.api.addBook(data.payload).pipe(
                     map(() => {
+                        this.store.dispatch(ModalActions.closeModal());
                         return BookActions.fetchBooks();
-                    }),
-                    map(() => {
-                        return ModalActions.closeModal();
                     }),
                     catchError((error) => {
                         return of(BookActions.fetchErrorBook({ payload: error.message }));
@@ -34,10 +34,8 @@ export class BookEffects {
             switchMap((data) => {
                 return this.api.updateBook(data.payload.id, data.payload.book).pipe(
                     map(() => {
+                        this.store.dispatch(ModalActions.closeModal());
                         return BookActions.fetchBooks();
-                    }),
-                    map(() => {
-                        return ModalActions.closeModal();
                     }),
                     catchError((error) => {
                         return of(BookActions.fetchErrorBook({ payload: error.message }));
@@ -69,14 +67,6 @@ export class BookEffects {
             switchMap(() => {
                 return this.api.getAllBooks().pipe(
                     map((books: Book[]) => {
-                        return books.map((book: Book) => {
-                            return {
-                                ...book,
-                                genres: book.genres ? book.genres : []
-                            };
-                        });
-                    }),
-                    map((books: Book[]) => {
                         return BookActions.setBooks({ payload: books });
                     }),
                     catchError((error) => {
@@ -87,5 +77,5 @@ export class BookEffects {
         );
     });
 
-    constructor(private actions$: Actions, private api: ApiService) { }
+    constructor(private actions$: Actions, private api: ApiService, private store: Store<fromApp.AppState>) { }
 }

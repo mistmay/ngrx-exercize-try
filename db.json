@@ -5,12 +5,39 @@
       "name": "pinco",
       "surname": "pallino",
       "id": 1
+    },
+    {
+      "name": "22222",
+      "surname": "2222",
+      "id": 2
+    },
+    {
+      "name": "ricc",
+      "surname": "duf",
+      "id": 3
+    },
+    {
+      "name": "anco",
+      "surname": "fff",
+      "id": 4
     }
   ],
   "genre": [
     {
       "name": "horror",
       "id": 1
+    },
+    {
+      "name": "thriller",
+      "id": 2
+    },
+    {
+      "name": "sdfsd",
+      "id": 3
+    },
+    {
+      "name": "dsfssdfsdf",
+      "id": 4
     }
   ]
 }

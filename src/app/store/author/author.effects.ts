@@ -6,6 +6,8 @@ import { ApiService } from "src/app/api/api.service";
 import { Author } from "src/app/models/author";
 import * as AuthorActions from './author.actions';
 import * as ModalActions from '../modal/modal.actions';
+import * as fromApp from '../app.reducer';
+import { Store } from "@ngrx/store";
 
 @Injectable()
 export class AuthorEffects {
@@ -15,10 +17,8 @@ export class AuthorEffects {
             switchMap((data) => {
                 return this.api.addAuthor(data.payload).pipe(
                     map(() => {
+                        this.store.dispatch(ModalActions.closeModal());
                         return AuthorActions.fetchAuthors();
-                    }),
-                    map(() => {
-                        return ModalActions.closeModal();
                     }),
                     catchError((error) => {
                         return of(AuthorActions.fetchErrorAuthor({ payload: error.message }));
@@ -34,13 +34,6 @@ export class AuthorEffects {
             switchMap(() => {
                 return this.api.getAllAuthors().pipe(
                     map((authors: Author[]) => {
-                        return authors.map((author: Author) => {
-                            return {
-                                ...author
-                            };
-                        });
-                    }),
-                    map((authors: Author[]) => {
                         return AuthorActions.setAuthors({ payload: authors });
                     }),
                     catchError((error) => {
@@ -51,5 +44,5 @@ export class AuthorEffects {
         );
     });
 
-    constructor(private actions$: Actions, private api: ApiService) { }
+    constructor(private actions$: Actions, private api: ApiService, private store: Store<fromApp.AppState>) { }
 }

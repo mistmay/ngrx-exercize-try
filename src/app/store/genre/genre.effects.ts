@@ -6,6 +6,8 @@ import { ApiService } from "src/app/api/api.service";
 import { Genre } from "src/app/models/genre";
 import * as GenreActions from './genre.actions';
 import * as ModalActions from '../modal/modal.actions';
+import * as fromApp from '../app.reducer';
+import { Store } from "@ngrx/store";
 
 @Injectable()
 export class GenreEffects {
@@ -15,10 +17,8 @@ export class GenreEffects {
             switchMap((data) => {
                 return this.api.addGenre(data.payload).pipe(
                     map(() => {
+                        this.store.dispatch(ModalActions.closeModal());
                         return GenreActions.fetchGenres();
-                    }),
-                    map(() => {
-                        return ModalActions.closeModal();
                     }),
                     catchError((error) => {
                         return of(GenreActions.fetchErrorGenre({ payload: error.message }));
@@ -34,13 +34,6 @@ export class GenreEffects {
             switchMap(() => {
                 return this.api.getAllGenres().pipe(
                     map((genres: Genre[]) => {
-                        return genres.map((genre: Genre) => {
-                            return {
-                                ...genre
-                            };
-                        });
-                    }),
-                    map((genres: Genre[]) => {
                         return GenreActions.setGenres({ payload: genres });
                     }),
                     catchError((error) => {
@@ -51,5 +44,5 @@ export class GenreEffects {
         );
     });
 
-    constructor(private actions$: Actions, private api: ApiService) { }
+    constructor(private actions$: Actions, private api: ApiService, private store: Store<fromApp.AppState>) { }
 }

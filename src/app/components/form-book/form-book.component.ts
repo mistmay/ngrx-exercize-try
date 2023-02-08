@@ -1,8 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormArray, FormControl } from '@angular/forms';
 import { Store } from '@ngrx/store';
-import { Subscription, combineLatest } from 'rxjs';
-import { take } from 'rxjs/operators';
+import { Subscription, combineLatest, Observable } from 'rxjs';
+import { take, map } from 'rxjs/operators';
 import { Author } from 'src/app/models/author';
 import { Book } from 'src/app/models/book';
 import { Genre } from 'src/app/models/genre';
@@ -10,6 +10,7 @@ import * as fromApp from '../../store/app.reducer';
 import * as fromAuthor from '../../store/author/author.reducer';
 import * as fromGenre from '../../store/genre/genre.reducer';
 import * as fromModal from '../../store/modal/modal.reducer';
+import * as fromBook from '../../store/book/book.reducer';
 import * as BookActions from '../../store/book/book.actions';
 import { checkboxListValidator } from 'src/app/validators/checkbox-list-validator';
 
@@ -23,18 +24,28 @@ export class FormBookComponent implements OnInit, OnDestroy {
   isUpdate!: [boolean, Book | undefined];
   authorsList!: Author[];
   genresList!: Genre[];
+  fetchError: string | undefined = undefined;
+  isLoading!: boolean;
   subscription!: Subscription;
+  postError$!: Observable<string | undefined>;
 
   constructor(private store: Store<fromApp.AppState>, private fb: FormBuilder) { }
 
   ngOnInit(): void {
+    this.postError$ = this.store.select('book').pipe(
+      map((bookState: fromBook.BookState) => {
+        return bookState.error;
+      })
+    );
     this.subscription = combineLatest([this.store.select('modal'), this.store.select('author'), this.store.select('genre')]).pipe(
       take(1)
     ).subscribe((res: [modalState: fromModal.ModalState, authorState: fromAuthor.AuthorState, genreState: fromGenre.GenreState]) => {
       console.log(res);
+      this.isLoading = res[1].isLoading || res[2].isLoading;
       this.isUpdate = [res[0].isUpdate, res[0].bookToUpdate];
       this.authorsList = [...res[1].authors];
       this.genresList = [...res[2].genres];
+      this.fetchError = res[1].error || res[2].error ? `${res[1].error}, ${res[2].error}` : undefined;
       const currentTitle: String = this.isUpdate[0] && this.isUpdate[1] ? this.isUpdate[1].title : '';
       const currenAuthor: String = this.isUpdate[0] && this.isUpdate[1] ? String(this.isUpdate[1].author.id) : '';
       this.form = this.fb.group({

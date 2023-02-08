@@ -4,6 +4,8 @@ import { map, Observable } from 'rxjs';
 import * as fromApp from './store/app.reducer'
 import * as fromModal from './store/modal/modal.reducer';
 import * as BookActions from './store/book/book.actions';
+import * as GenreActions from './store/genre/genre.actions';
+import * as AuthorActions from './store/author/author.actions';
 
 @Component({
   selector: 'app-root',
@@ -22,6 +24,8 @@ export class AppComponent implements OnInit {
       })
     );
     this.store.dispatch(BookActions.fetchBooks());
+    this.store.dispatch(GenreActions.fetchGenres());
+    this.store.dispatch(AuthorActions.fetchAuthors());
   }
 
 }
