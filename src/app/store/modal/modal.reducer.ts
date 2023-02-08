@@ -38,6 +38,7 @@ export const modalReducer = createReducer(
         return {
             ...state,
             isUpdate: true,
+            showModal: true,
             bookToUpdate: action.payload
         };
     })

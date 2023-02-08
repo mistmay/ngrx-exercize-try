@@ -20,7 +20,8 @@ export const bookReducer = createReducer(
         return {
             ...state,
             books: [...state.books, action.payload],
-            isLoading: true
+            isLoading: true,
+            error: undefined
         };
     }),
     on(BookActions.updateBook, (state: BookState, action: { payload: { id: number, book: Book } }) => {
@@ -30,20 +31,23 @@ export const bookReducer = createReducer(
         return {
             ...state,
             books: updatedBooks,
-            isLoading: true
+            isLoading: true,
+            error: undefined
         };
     }),
     on(BookActions.deleteBook, (state: BookState, action: { payload: number }) => {
         return {
             ...state,
             books: state.books.filter((book: Book) => book.id !== action.payload),
-            isLoading: true
+            isLoading: true,
+            error: undefined
         };
     }),
     on(BookActions.fetchBooks, (state: BookState) => {
         return {
             ...state,
-            isLoading: true
+            isLoading: true,
+            error: undefined
         }
     }),
     on(BookActions.setBooks, (state: BookState, action: { payload: Book[] }) => {

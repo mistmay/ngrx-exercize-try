@@ -20,13 +20,15 @@ export const genreReducer = createReducer(
         return {
             ...state,
             genres: [...state.genres, action.payload],
-            isLoading: true
+            isLoading: true,
+            error: undefined
         };
     }),
     on(GenreActions.fetchGenres, (state: GenreState) => {
         return {
             ...state,
-            isLoading: true
+            isLoading: true,
+            error: undefined
         }
     }),
     on(GenreActions.setGenres, (state: GenreState, action: { payload: Genre[] }) => {

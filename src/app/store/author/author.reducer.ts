@@ -20,13 +20,15 @@ export const authorReducer = createReducer(
         return {
             ...state,
             authors: [...state.authors, action.payload],
-            isLoading: true
+            isLoading: true,
+            error: undefined
         };
     }),
     on(AuthorActions.fetchAuthors, (state: AuthorState) => {
         return {
             ...state,
-            isLoading: true
+            isLoading: true,
+            error: undefined
         }
     }),
     on(AuthorActions.setAuthors, (state: AuthorState, action: { payload: Author[] }) => {
