@@ -12,6 +12,8 @@ import * as fromGenre from '../../store/genre/genre.reducer';
 import * as fromModal from '../../store/modal/modal.reducer';
 import * as fromBook from '../../store/book/book.reducer';
 import * as BookActions from '../../store/book/book.actions';
+import * as GenreActions from '../../store/genre/genre.actions';
+import * as AuthorActions from '../../store/author/author.actions';
 import { checkboxListValidator } from 'src/app/validators/checkbox-list-validator';
 
 @Component({
@@ -32,35 +34,35 @@ export class FormBookComponent implements OnInit, OnDestroy {
   constructor(private store: Store<fromApp.AppState>, private fb: FormBuilder) { }
 
   ngOnInit(): void {
+    this.store.dispatch(GenreActions.fetchGenres());
+    this.store.dispatch(AuthorActions.fetchAuthors());
     this.postError$ = this.store.select('book').pipe(
       map((bookState: fromBook.BookState) => {
         return bookState.error;
       })
     );
-    this.subscription = combineLatest([this.store.select('modal'), this.store.select('author'), this.store.select('genre')]).pipe(
-      take(1)
-    ).subscribe((res: [modalState: fromModal.ModalState, authorState: fromAuthor.AuthorState, genreState: fromGenre.GenreState]) => {
-      console.log(res);
-      this.isLoading = res[1].isLoading || res[2].isLoading;
-      this.isUpdate = [res[0].isUpdate, res[0].bookToUpdate];
-      this.authorsList = [...res[1].authors];
-      this.genresList = [...res[2].genres];
-      this.fetchError = res[1].error || res[2].error ? `${res[1].error}, ${res[2].error}` : undefined;
-      const currentTitle: String = this.isUpdate[0] && this.isUpdate[1] ? this.isUpdate[1].title : '';
-      const currenAuthor: String = this.isUpdate[0] && this.isUpdate[1] ? String(this.isUpdate[1].author.id) : '';
-      this.form = this.fb.group({
-        title: [currentTitle, Validators.compose([Validators.required, Validators.minLength(3)])],
-        author: [currenAuthor, Validators.required],
-        genres: this.fb.array([], Validators.compose([Validators.required, checkboxListValidator()]))
+    this.subscription = combineLatest([this.store.select('modal'), this.store.select('author'), this.store.select('genre')])
+      .subscribe((res: [modalState: fromModal.ModalState, authorState: fromAuthor.AuthorState, genreState: fromGenre.GenreState]) => {
+        this.isLoading = res[1].isLoading || res[2].isLoading;
+        this.isUpdate = [res[0].isUpdate, res[0].bookToUpdate];
+        this.authorsList = [...res[1].authors];
+        this.genresList = [...res[2].genres];
+        this.fetchError = res[1].error || res[2].error ? `${res[1].error}, ${res[2].error}` : undefined;
+        const currentTitle: String = this.isUpdate[0] && this.isUpdate[1] ? this.isUpdate[1].title : '';
+        const currenAuthor: String = this.isUpdate[0] && this.isUpdate[1] ? String(this.isUpdate[1].author.id) : '';
+        this.form = this.fb.group({
+          title: [currentTitle, Validators.compose([Validators.required, Validators.minLength(3)])],
+          author: [currenAuthor, Validators.required],
+          genres: this.fb.array([], Validators.compose([Validators.required, checkboxListValidator()]))
+        });
+        this.genresList.forEach((genre: Genre) => {
+          if (this.isUpdate[0] && this.isUpdate[1]) {
+            this.addGenre(this.checkToCheck(genre));
+          } else {
+            this.addGenre(false);
+          }
+        });
       });
-      this.genresList.forEach((genre: Genre) => {
-        if (this.isUpdate[0] && this.isUpdate[1]) {
-          this.addGenre(this.checkToCheck(genre));
-        } else {
-          this.addGenre(false);
-        }
-      });
-    });
   }
 
   ngOnDestroy(): void {

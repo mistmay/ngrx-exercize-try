@@ -13,5 +13,5 @@ export const closeModal = createAction(
 
 export const setUpdateForm = createAction(
     '[Modal] Set Update Form',
-    props<{ payload: Book }>()
+    props<{ payload: { book: Book, formType: Form } }>()
 );

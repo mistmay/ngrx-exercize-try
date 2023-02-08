@@ -19,3 +19,7 @@ export const fetchErrorGenre = createAction(
     '[Genre] Fetch Error Genre',
     props<{ payload: string }>()
 );
+
+export const resetError = createAction(
+    '[Genre] Reset Error'
+);

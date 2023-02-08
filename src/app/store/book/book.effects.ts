@@ -54,6 +54,7 @@ export class BookEffects {
                         return BookActions.fetchBooks();
                     }),
                     catchError((error) => {
+                        alert('Error deleting Book');
                         return of(BookActions.fetchErrorBook({ payload: error.message }));
                     })
                 );

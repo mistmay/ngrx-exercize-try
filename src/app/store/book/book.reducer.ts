@@ -48,7 +48,7 @@ export const bookReducer = createReducer(
             ...state,
             isLoading: true,
             error: undefined
-        }
+        };
     }),
     on(BookActions.setBooks, (state: BookState, action: { payload: Book[] }) => {
         return {
@@ -63,6 +63,12 @@ export const bookReducer = createReducer(
             ...state,
             error: action.payload,
             isLoading: false
+        };
+    }),
+    on(BookActions.resetError, (state: BookState) => {
+        return {
+            ...state,
+            error: undefined
         };
     })
 );

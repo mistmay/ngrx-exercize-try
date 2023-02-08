@@ -29,7 +29,7 @@ export const authorReducer = createReducer(
             ...state,
             isLoading: true,
             error: undefined
-        }
+        };
     }),
     on(AuthorActions.setAuthors, (state: AuthorState, action: { payload: Author[] }) => {
         return {
@@ -44,6 +44,12 @@ export const authorReducer = createReducer(
             ...state,
             error: action.payload,
             isLoading: false
+        };
+    }),
+    on(AuthorActions.resetError, (state: AuthorState) => {
+        return {
+            ...state,
+            error: undefined
         };
     })
 );

@@ -32,14 +32,15 @@ export const modalReducer = createReducer(
             showModal: false,
             isUpdate: false,
             bookToUpdate: undefined
-        }
+        };
     }),
-    on(ModalActions.setUpdateForm, (state: ModalState, action: { payload: Book }) => {
+    on(ModalActions.setUpdateForm, (state: ModalState, action: { payload: { book: Book, formType: Form } }) => {
         return {
             ...state,
             isUpdate: true,
             showModal: true,
-            bookToUpdate: action.payload
+            bookToUpdate: action.payload.book,
+            formType: action.payload.formType
         };
     })
 );

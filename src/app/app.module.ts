@@ -17,6 +17,7 @@ import { FormAuthorComponent } from './components/form-author/form-author.compon
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormGenreComponent } from './components/form-genre/form-genre.component';
 import { FormBookComponent } from './components/form-book/form-book.component';
+import { ModalEffects } from './store/modal/modal.effects';
 
 @NgModule({
   declarations: [
@@ -34,7 +35,7 @@ import { FormBookComponent } from './components/form-book/form-book.component';
     AppRoutingModule,
     HttpClientModule,
     StoreModule.forRoot(fromApp.appReducer),
-    EffectsModule.forRoot([AuthorEffects, BookEffects, GenreEffects]),
+    EffectsModule.forRoot([AuthorEffects, BookEffects, GenreEffects, ModalEffects]),
     ReactiveFormsModule
   ],
   providers: [],

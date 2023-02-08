@@ -28,7 +28,7 @@ export class TableComponent implements OnInit {
   }
 
   updateBook(book: Book): void {
-    this.store.dispatch(ModalActions.setUpdateForm({ payload: book }));
+    this.store.dispatch(ModalActions.setUpdateForm({ payload: { book: book, formType: 'book' } }));
   }
 
 }

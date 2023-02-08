@@ -29,7 +29,7 @@ export const genreReducer = createReducer(
             ...state,
             isLoading: true,
             error: undefined
-        }
+        };
     }),
     on(GenreActions.setGenres, (state: GenreState, action: { payload: Genre[] }) => {
         return {
@@ -44,6 +44,12 @@ export const genreReducer = createReducer(
             ...state,
             error: action.payload,
             isLoading: false
+        };
+    }),
+    on(GenreActions.resetError, (state: GenreState) => {
+        return {
+            ...state,
+            error: undefined
         };
     })
 );

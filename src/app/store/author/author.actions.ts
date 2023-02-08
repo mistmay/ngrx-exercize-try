@@ -19,3 +19,7 @@ export const fetchErrorAuthor = createAction(
     '[Author] Fetch Error Author',
     props<{ payload: string }>()
 );
+
+export const resetError = createAction(
+    '[Author] Reset Error'
+);

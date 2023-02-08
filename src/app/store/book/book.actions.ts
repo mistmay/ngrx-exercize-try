@@ -29,3 +29,7 @@ export const fetchErrorBook = createAction(
     '[Book] Fetch Error Book',
     props<{ payload: string }>()
 );
+
+export const resetError = createAction(
+    '[Book] Reset Error'
+);
